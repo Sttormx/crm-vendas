@@ -1,0 +1,12 @@
+export enum STATUS_AGENT {
+  ACTIVE = 1,
+  INACTIVE = 2
+}
+
+export enum STATUS_CLIENT {
+  AWAITING = 1,
+  IN_ATTENDANCE = 2,
+  PROPOSAL_MADE = 3,
+  NOT_COMPLETED = 4,
+  SOLD = 5
+}
