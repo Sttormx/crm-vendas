@@ -8,6 +8,7 @@ import { delClient, editClient } from '@/services/clients';
 import { NextPage } from 'next';
 import { usePathname } from 'next/navigation';
 import { getAgent } from '@/services/agents';
+import Papa from 'papaparse';
 
 const Content = styled.main`
   text-align: center;
@@ -36,6 +37,7 @@ const Page: NextPage = () => {
 
   const [agent, setAgent] = useState<Agent>();
   const [clients, setClients] = useState<Array<Clients>>([]);
+  const [filterStatus, setFilterStatus] = useState('');
   const [nameInput, setNameInput] = useState('');
   const [emailInput, setEmailInput] = useState('');
   const [statusInput, setStatusInput] = useState('');
@@ -56,7 +58,7 @@ const Page: NextPage = () => {
         setClients(clients);
         setAgent({
           id: id,
-          name: data.agent,
+          name: data.name,
           email: data.email
         })
       }).
@@ -72,6 +74,20 @@ const Page: NextPage = () => {
       setLoaded(true);
     }
   }, [loaded])
+
+  const handleExportCSV = () => {
+    const filteredClients = filterStatus != "" ? clients.filter(c => c.status == filterStatus) : clients;
+    const csv = Papa.unparse(filteredClients, {
+      columns: ['id', 'name', 'email', 'contact', 'address', 'status', 'agent'],
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'clients.csv';
+    link.click();
+    URL.revokeObjectURL(link.href);
+  };
 
   const handleUpdate = (e: any) => {
     e.preventDefault();
@@ -194,6 +210,26 @@ const Page: NextPage = () => {
               </li>
             ))}
           </ul>
+          {
+            clients.length > 0 && (
+              <div className='flex flex-col items-start'>
+                <h3 className="text-3xl my-5">Exportar</h3>
+                <div className="filter-export-section items-start flex gap-5">
+                  <button onClick={handleExportCSV} className="bg-green-500 hover:bg-green-600 py-2 px-4 rounded ">
+                    Export
+                  </button>
+                  <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)} className="p-2 mb-2 text-black">
+                    <option value="">Select Status</option>
+                    <option value="1">Aguardando</option>
+                    <option value="2">Em Atendimento</option>
+                    <option value="3">Proposta Feita</option>
+                    <option value="4">Não completa</option>
+                    <option value="5">Vendido</option>
+                  </select>
+                </div>
+              </div>
+            )
+          }
         </div>
       </Content>
     </>
