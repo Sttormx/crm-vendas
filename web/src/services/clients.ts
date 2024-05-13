@@ -1,8 +1,7 @@
-import config from '../../config';
 import axios, { AxiosResponse } from 'axios';
 
 const instance = axios.create({
-  baseURL: `${config.API_URL}/api/v1`,
+  baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api/v1`,
   headers: {}
 });
 
