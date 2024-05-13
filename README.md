@@ -2,7 +2,8 @@
 > Um CRM de vendas construído em Node.js e Typescript, utilizando clean architecture e Domain Drive Design(DDD)
 
 ## Preview
-Acesse a URL https://crm-vendas-1.onrender.com/
+Acesse a URL https://crm-vendas-1.onrender.com/.
+> O servidor em que o projeto hospedado costuma ter um delay de um minuto para liberar as requisições. Basta aguardar e dar um refresh na página
 
 ## Tecnologias
 - Node.js com Typescript
